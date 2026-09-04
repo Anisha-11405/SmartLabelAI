@@ -1,128 +1,1738 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SmartLabel AI - LMPC Compliance Engine</title>
-  <link rel="stylesheet" href="/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartLabel AI | Legal Metrology Compliance</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: #101a3a;
+            color: white;
+            padding: 16px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,.12);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .brand h1 {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .brand span {
+            font-size: 11px;
+            color: #b8c4e6;
+            display: block;
+            margin-top: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        nav button {
+            background: transparent;
+            border: none;
+            color: #dce3ff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        nav button:hover,
+        nav button.active {
+            background: rgba(255,255,255,.12);
+            color: white;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background: linear-gradient(135deg, #101a3a, #263b82);
+            color: white;
+            padding: 55px 5% 75px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.2);
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            max-width: 750px;
+            line-height: 1.15;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            color: #d6def8;
+            line-height: 1.7;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 1200px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        /* ================= STAT CARDS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 25px rgba(20,30,60,.07);
+            border: 1px solid #e8ebf2;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef2ff;
+            font-size: 20px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: 800;
+            margin-top: 15px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #77809a;
+            margin-top: 5px;
+        }
+
+        /* ================= GRID ================= */
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #e6e9f0;
+            box-shadow: 0 8px 25px rgba(20,30,60,.06);
+            padding: 25px;
+            margin-bottom: 22px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: #7a8298;
+            margin-top: 4px;
+        }
+
+        /* ================= UPLOAD ================= */
+
+        .upload-box {
+            border: 2px dashed #b9c3e3;
+            background: #f8f9ff;
+            border-radius: 16px;
+            min-height: 270px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .upload-box:hover {
+            border-color: #6575e8;
+            background: #f2f4ff;
+        }
+
+        .upload-icon {
+            width: 70px;
+            height: 70px;
+            background: #e9edff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: auto auto 18px;
+        }
+
+        .upload-box h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .upload-box p {
+            color: #7c849a;
+            font-size: 13px;
+        }
+
+        .upload-box input {
+            display: none;
+        }
+
+        .upload-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background: #5869e8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4658d8;
+        }
+
+        .btn-secondary {
+            background: #eef1f7;
+            color: #30394f;
+        }
+
+        /* ================= IMAGE PREVIEW ================= */
+
+        .preview-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .preview-container img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #f2f3f7;
+            border: 1px solid #e1e4ec;
+        }
+
+        /* ================= SCANNING ================= */
+
+        .scan-panel {
+            background: #101a3a;
+            color: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 22px;
+            display: none;
+        }
+
+        .scan-panel.show {
+            display: block;
+        }
+
+        .scan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .scan-header h3 {
+            font-size: 19px;
+        }
+
+        .scan-header p {
+            color: #aeb9dc;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .scan-badge {
+            background: #f6c343;
+            color: #25200d;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .progress {
+            height: 8px;
+            background: rgba(255,255,255,.12);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg,#667eea,#a777e3);
+            border-radius: 10px;
+            transition: width .4s ease;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: #aeb9dc;
+            font-size: 11px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 8px;
+            margin-top: 25px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 10px 5px;
+            color: #727fa6;
+            font-size: 10px;
+        }
+
+        .step-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #222d55;
+            margin: auto auto 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step.active {
+            color: white;
+        }
+
+        .step.active .step-icon {
+            background: #667eea;
+        }
+
+        .step.completed {
+            color: #63e6be;
+        }
+
+        .step.completed .step-icon {
+            background: #168f67;
+        }
+
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(255,255,255,.06);
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        /* ================= RESULT ================= */
+
+        .result-card {
+            text-align: center;
+        }
+
+        .result-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #e6f8f1;
+            border: 8px solid #b8ecd9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px auto 18px;
+            font-size: 38px;
+        }
+
+        .result-card h2 {
+            font-size: 23px;
+        }
+
+        .result-card p {
+            color: #7a8298;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .score {
+            margin-top: 18px;
+            font-size: 35px;
+            font-weight: 800;
+        }
+
+        /* ================= DECLARATIONS ================= */
+
+        .declaration-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .declaration {
+            display: grid;
+            grid-template-columns: 35px 1fr auto;
+            align-items: center;
+            gap: 10px;
+            padding: 13px;
+            border-radius: 10px;
+            background: #f8f9fc;
+            border: 1px solid #edf0f5;
+        }
+
+        .declaration-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: #e8ecff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .declaration-name {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .declaration-value {
+            font-size: 11px;
+            color: #737b91;
+            margin-top: 3px;
+        }
+
+        .status {
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .status.pass {
+            background: #dff7ec;
+            color: #16835e;
+        }
+
+        .status.review {
+            background: #fff1cc;
+            color: #9b6b00;
+        }
+
+        .status.fail {
+            background: #ffe1e3;
+            color: #b32632;
+        }
+
+        /* ================= RULE ENGINE ================= */
+
+        .rule-item {
+            padding: 15px;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .rule-item:last-child {
+            border-bottom: none;
+        }
+
+        .rule-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .rule-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .rule-ref {
+            color: #7d86a0;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .rule-description {
+            font-size: 11px;
+            color: #747d92;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ================= EVIDENCE ================= */
+
+        .evidence {
+            background: #f7f8fb;
+            border-radius: 12px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 11px;
+            line-height: 1.7;
+            color: #454d62;
+            max-height: 230px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .report-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #101a3a;
+            color: #aeb9dc;
+            text-align: center;
+            padding: 25px;
+            font-size: 11px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .hero h2 {
+                font-size: 32px;
+            }
+        }
+
+        @media(max-width: 600px) {
+            nav {
+                display: none;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hero {
+                padding: 40px 20px 70px;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header class="no-print">
-      <div class="eyebrow">LEGAL METROLOGY (PACKAGED COMMODITIES) RULES, 2011</div>
-      <h1>SmartLabel AI Compliance Auditor</h1>
-      <p>Automated declaration verification and statutory regulatory reporting</p>
-    </header>
 
-    <div class="grid no-print">
-      <div class="card">
-        <!-- AI SCANNING STATUS -->
-<div id="scanPanel" class="scan-panel hidden no-print">
+<!-- ================= HEADER ================= -->
 
-  <div class="scan-header">
-    <div>
-      <h2>AI Compliance Inspection</h2>
-      <p id="scanSubtitle">Analyzing packaged commodity...</p>
-    </div>
-    <div id="scanBadge" class="scan-badge">SCANNING</div>
-  </div>
+<header>
 
-  <div class="progress-container">
-    <div class="progress-bar">
-      <div id="progressFill"></div>
-    </div>
-    <span id="progressPercent">0%</span>
-  </div>
+    <div class="brand">
+        <div class="brand-logo">🔍</div>
 
-  <div class="processing-steps">
-
-    <div class="process-step" id="stepUpload">
-      <div class="step-icon">✓</div>
-      <div>
-        <strong>Image Uploaded</strong>
-        <span>Product image received</span>
-      </div>
-    </div>
-
-    <div class="process-step" id="stepOCR">
-      <div class="step-icon">2</div>
-      <div>
-        <strong>OCR Extraction</strong>
-        <span>Reading product label...</span>
-      </div>
-    </div>
-
-    <div class="process-step" id="stepExtract">
-      <div class="step-icon">3</div>
-      <div>
-        <strong>Information Extraction</strong>
-        <span>Identifying product details</span>
-      </div>
-    </div>
-
-    <div class="process-step" id="stepCompliance">
-      <div class="step-icon">4</div>
-      <div>
-        <strong>Compliance Check</strong>
-        <span>Validating Legal Metrology rules</span>
-      </div>
-    </div>
-
-    <div class="process-step" id="stepReport">
-      <div class="step-icon">5</div>
-      <div>
-        <strong>Report Generated</strong>
-        <span>Preparing inspection result</span>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="live-status">
-    <div class="spinner"></div>
-    <span id="liveMessage">Initializing OCR engine...</span>
-  </div>
-
-</div>
-        <h2>1. Upload Product Label</h2>
-        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple>
-        <div id="preview"></div>
-        <button id="analyze">Run Compliance Audit</button>
-      </div>
-
-      <div class="card">
-        <h2>2. Detected Declarations <span id="badge" class="badge">Waiting</span></h2>
-        <div id="fields" class="fields">
-          <p class="placeholder-text">Declarations will appear after scanning.</p>
+        <div>
+            <h1>SmartLabel AI</h1>
+            <span>Packaged Commodity Compliance</span>
         </div>
-        <details>
-          <summary>View raw extracted OCR text</summary>
-          <pre id="raw"></pre>
-        </details>
-      </div>
     </div>
 
-    <!-- Printable Report Container -->
-    <div class="card report-card" id="printableReport">
-      <div class="report-header-bar">
-        <h2>3. Statutory Compliance Inspection Report</h2>
-        <div class="report-actions no-print" id="reportActions" style="display: none;">
-          <button id="printReportBtn" class="btn-secondary">Print / Save as PDF</button>
-          <button id="downloadJsonBtn" class="btn-secondary">Download JSON</button>
+    <nav>
+        <button class="active">Dashboard</button>
+        <button>New Inspection</button>
+        <button>History</button>
+        <button>Reports</button>
+    </nav>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            🤖 AI-POWERED INSPECTION SYSTEM
         </div>
-      </div>
-      
-      <div id="result">
-        <p class="placeholder-text">Upload a label image and click <b>Run Compliance Audit</b> to generate the LMPC evaluation report.</p>
-      </div>
+
+        <h2>
+            Intelligent Legal Metrology
+            Compliance Verification
+        </h2>
+
+        <p>
+            Scan packaged commodity labels using OCR and automatically
+            verify detected declarations against configurable Legal
+            Metrology compliance rules.
+        </p>
+
     </div>
 
-    <div class="card small no-print">
-      <h2>OCR Engine Diagnostics</h2>
-      <div id="diag">Checking engine...</div>
-    </div>
-  </div>
+</section>
 
-  <script src="/app.js"></script>
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <div>
+                    <div class="stat-label">TOTAL INSPECTIONS</div>
+                    <div class="stat-number" id="totalInspections">0</div>
+                </div>
+
+                <div class="stat-icon">📋</div>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <div>
+                    <div class="stat-label">COMPLIANT</div>
+                    <div class="stat-number" id="compliantCount">0</div>
+                </div>
+
+                <div class="stat-icon">✅</div>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <div>
+                    <div class="stat-label">REVIEW REQUIRED</div>
+                    <div class="stat-number" id="reviewCount">0</div>
+                </div>
+
+                <div class="stat-icon">⚠️</div>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <div>
+                    <div class="stat-label">FLAGGED</div>
+                    <div class="stat-number" id="flaggedCount">0</div>
+                </div>
+
+                <div class="stat-icon">🚨</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= MAIN GRID ================= -->
+
+    <div class="main-grid">
+
+
+        <!-- ================= LEFT COLUMN ================= -->
+
+        <div>
+
+
+            <!-- UPLOAD -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <div class="card-title">
+                            📦 Product Label Inspection
+                        </div>
+
+                        <div class="card-subtitle">
+                            Upload a package image to begin AI analysis
+                        </div>
+                    </div>
+
+                    <span class="status pass">
+                        AI READY
+                    </span>
+
+                </div>
+
+
+                <label class="upload-box" for="imageInput">
+
+                    <div>
+
+                        <div class="upload-icon">
+                            📷
+                        </div>
+
+                        <h3>
+                            Upload Product Label
+                        </h3>
+
+                        <p>
+                            Drag & drop or click to browse
+                        </p>
+
+                        <p style="margin-top:7px">
+                            JPG, JPEG, PNG • Multiple images supported
+                        </p>
+
+                    </div>
+
+                    <input
+                        type="file"
+                        id="imageInput"
+                        accept="image/*"
+                        multiple
+                    >
+
+                </label>
+
+
+                <div class="preview-container" id="previewContainer">
+
+                    <img id="previewImage" alt="Product preview">
+
+                </div>
+
+
+                <div class="upload-actions">
+
+                    <button
+                        class="btn btn-primary"
+                        id="analyzeBtn"
+                    >
+                        🚀 Start AI Inspection
+                    </button>
+
+                    <button
+                        class="btn btn-secondary"
+                        id="clearBtn"
+                    >
+                        Clear
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= AI SCANNING ================= -->
+
+            <section
+                class="scan-panel"
+                id="scanPanel"
+            >
+
+                <div class="scan-header">
+
+                    <div>
+                        <h3>🤖 AI Compliance Inspection</h3>
+
+                        <p id="scanSubtitle">
+                            Analyzing packaged commodity...
+                        </p>
+                    </div>
+
+                    <div
+                        class="scan-badge"
+                        id="scanBadge"
+                    >
+                        SCANNING
+                    </div>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+
+                <div class="progress-label">
+
+                    <span>Inspection Progress</span>
+
+                    <span id="progressPercent">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="steps">
+
+                    <div
+                        class="step active"
+                        id="stepUpload"
+                    >
+                        <div class="step-icon">📤</div>
+                        Upload
+                    </div>
+
+
+                    <div
+                        class="step"
+                        id="stepOCR"
+                    >
+                        <div class="step-icon">🔎</div>
+                        OCR Scan
+                    </div>
+
+
+                    <div
+                        class="step"
+                        id="stepExtract"
+                    >
+                        <div class="step-icon">🧠</div>
+                        Extraction
+                    </div>
+
+
+                    <div
+                        class="step"
+                        id="stepCompliance"
+                    >
+                        <div class="step-icon">⚖️</div>
+                        Rules
+                    </div>
+
+
+                    <div
+                        class="step"
+                        id="stepReport"
+                    >
+                        <div class="step-icon">📊</div>
+                        Report
+                    </div>
+
+                </div>
+
+
+                <div class="live-status">
+
+                    <span>⟳</span>
+
+                    <span id="liveMessage">
+                        Initializing inspection...
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= DETECTED DECLARATIONS ================= -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            🔎 Detected Declarations
+                        </div>
+
+                        <div class="card-subtitle">
+                            Information extracted from the product label
+                        </div>
+
+                    </div>
+
+                    <span
+                        class="status pass"
+                        id="ocrStatus"
+                    >
+                        OCR READY
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="declaration-list"
+                    id="declarations"
+                >
+
+                    <div class="declaration">
+
+                        <div class="declaration-icon">
+                            🏷️
+                        </div>
+
+                        <div>
+                            <div class="declaration-name">
+                                Product Name
+                            </div>
+
+                            <div
+                                class="declaration-value"
+                                id="productName"
+                            >
+                                Not detected
+                            </div>
+                        </div>
+
+                        <span class="status review">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="declaration">
+
+                        <div class="declaration-icon">
+                            🏭
+                        </div>
+
+                        <div>
+                            <div class="declaration-name">
+                                Manufacturer / Packer / Importer
+                            </div>
+
+                            <div
+                                class="declaration-value"
+                                id="manufacturer"
+                            >
+                                Not detected
+                            </div>
+                        </div>
+
+                        <span class="status review">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="declaration">
+
+                        <div class="declaration-icon">
+                            ⚖️
+                        </div>
+
+                        <div>
+                            <div class="declaration-name">
+                                Net Quantity
+                            </div>
+
+                            <div
+                                class="declaration-value"
+                                id="netQuantity"
+                            >
+                                Not detected
+                            </div>
+                        </div>
+
+                        <span class="status review">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="declaration">
+
+                        <div class="declaration-icon">
+                            💰
+                        </div>
+
+                        <div>
+                            <div class="declaration-name">
+                                Maximum Retail Price
+                            </div>
+
+                            <div
+                                class="declaration-value"
+                                id="mrp"
+                            >
+                                Not detected
+                            </div>
+                        </div>
+
+                        <span class="status review">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="declaration">
+
+                        <div class="declaration-icon">
+                            🔢
+                        </div>
+
+                        <div>
+                            <div class="declaration-name">
+                                Batch / Lot Number
+                            </div>
+
+                            <div
+                                class="declaration-value"
+                                id="batchNumber"
+                            >
+                                Not detected
+                            </div>
+                        </div>
+
+                        <span class="status review">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="declaration">
+
+                        <div class="declaration-icon">
+                            📅
+                        </div>
+
+                        <div>
+                            <div class="declaration-name">
+                                Date Declaration
+                            </div>
+
+                            <div
+                                class="declaration-value"
+                                id="date"
+                            >
+                                Not detected
+                            </div>
+                        </div>
+
+                        <span class="status review">
+                            —
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= OCR EVIDENCE ================= -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            📄 OCR Evidence
+                        </div>
+
+                        <div class="card-subtitle">
+                            Raw text detected from the package image
+                        </div>
+
+                    </div>
+
+                    <span class="status pass">
+                        TESSERACT OCR
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="evidence"
+                    id="ocrText"
+                >
+                    OCR results will appear here after scanning...
+                </div>
+
+            </section>
+
+        </div>
+
+
+
+        <!-- ================= RIGHT COLUMN ================= -->
+
+        <div>
+
+
+            <!-- ================= RESULT ================= -->
+
+            <section class="card result-card">
+
+                <div class="card-header">
+
+                    <div style="text-align:left">
+
+                        <div class="card-title">
+                            Compliance Result
+                        </div>
+
+                        <div class="card-subtitle">
+                            Automated screening result
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="result-circle" id="resultIcon">
+                    🛡️
+                </div>
+
+                <h2 id="resultStatus">
+                    Awaiting Inspection
+                </h2>
+
+                <p id="resultDescription">
+                    Upload a product image to begin compliance verification.
+                </p>
+
+                <div
+                    class="score"
+                    id="complianceScore"
+                >
+                    —
+                </div>
+
+                <p>
+                    Compliance Score
+                </p>
+
+            </section>
+
+
+
+            <!-- ================= RULE ENGINE ================= -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            ⚖️ Legal Compliance Engine
+                        </div>
+
+                        <div class="card-subtitle">
+                            Rule-based validation
+                        </div>
+
+                    </div>
+
+                    <span class="status pass">
+                        ACTIVE
+                    </span>
+
+                </div>
+
+
+                <div class="rule-item">
+
+                    <div class="rule-top">
+
+                        <div>
+
+                            <div class="rule-name">
+                                Manufacturer / Packer / Importer
+                            </div>
+
+                            <div class="rule-ref">
+                                Rule 6 — Declaration requirement
+                            </div>
+
+                        </div>
+
+                        <span class="status pass">
+                            PASS
+                        </span>
+
+                    </div>
+
+                    <div class="rule-description">
+                        Required declaration is checked against
+                        information detected from the package.
+                    </div>
+
+                </div>
+
+
+                <div class="rule-item">
+
+                    <div class="rule-top">
+
+                        <div>
+
+                            <div class="rule-name">
+                                Common / Generic Name
+                            </div>
+
+                            <div class="rule-ref">
+                                Rule 6
+                            </div>
+
+                        </div>
+
+                        <span class="status pass">
+                            PASS
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rule-item">
+
+                    <div class="rule-top">
+
+                        <div>
+
+                            <div class="rule-name">
+                                Net Quantity
+                            </div>
+
+                            <div class="rule-ref">
+                                Rule 6
+                            </div>
+
+                        </div>
+
+                        <span class="status pass">
+                            PASS
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rule-item">
+
+                    <div class="rule-top">
+
+                        <div>
+
+                            <div class="rule-name">
+                                MRP Inclusive of Taxes
+                            </div>
+
+                            <div class="rule-ref">
+                                Rule 6
+                            </div>
+
+                        </div>
+
+                        <span class="status review">
+                            REVIEW
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rule-item">
+
+                    <div class="rule-top">
+
+                        <div>
+
+                            <div class="rule-name">
+                                Consumer Care Details
+                            </div>
+
+                            <div class="rule-ref">
+                                Rule 6
+                            </div>
+
+                        </div>
+
+                        <span class="status review">
+                            REVIEW
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rule-item">
+
+                    <div class="rule-top">
+
+                        <div>
+
+                            <div class="rule-name">
+                                Unit Sale Price
+                            </div>
+
+                            <div class="rule-ref">
+                                Applicable from 01.02.2023
+                            </div>
+
+                        </div>
+
+                        <span class="status review">
+                            REVIEW
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= INSPECTION SUMMARY ================= -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            📊 Inspection Summary
+                        </div>
+
+                        <div class="card-subtitle">
+                            Current inspection statistics
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="declaration">
+
+                    <div class="declaration-icon">
+                        ✅
+                    </div>
+
+                    <div>
+                        <div class="declaration-name">
+                            Passed Checks
+                        </div>
+
+                        <div class="declaration-value">
+                            Requirements satisfied
+                        </div>
+                    </div>
+
+                    <strong id="passedChecks">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="declaration">
+
+                    <div class="declaration-icon">
+                        ⚠️
+                    </div>
+
+                    <div>
+                        <div class="declaration-name">
+                            Review Required
+                        </div>
+
+                        <div class="declaration-value">
+                            Manual verification needed
+                        </div>
+                    </div>
+
+                    <strong id="reviewChecks">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="declaration">
+
+                    <div class="declaration-icon">
+                        ❌
+                    </div>
+
+                    <div>
+                        <div class="declaration-name">
+                            Failed Checks
+                        </div>
+
+                        <div class="declaration-value">
+                            Potential non-compliance
+                        </div>
+                    </div>
+
+                    <strong id="failedChecks">
+                        0
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= REPORT ================= -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            📑 Compliance Report
+                        </div>
+
+                        <div class="card-subtitle">
+                            Generate inspection documentation
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="report-actions">
+
+                    <button
+                        class="btn btn-primary"
+                        id="printBtn"
+                    >
+                        🖨️ Print Report
+                    </button>
+
+                    <button
+                        class="btn btn-secondary"
+                        id="downloadJsonBtn"
+                    >
+                        ⬇️ Export JSON
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= LEGAL DISCLAIMER ================= -->
+
+    <section class="card">
+
+        <div style="
+            display:flex;
+            gap:15px;
+            align-items:flex-start;
+        ">
+
+            <div style="font-size:25px">
+                ⚠️
+            </div>
+
+            <div>
+
+                <div class="card-title">
+                    Important Compliance Notice
+                </div>
+
+                <p style="
+                    color:#727b91;
+                    font-size:12px;
+                    line-height:1.7;
+                    margin-top:8px;
+                ">
+                    SmartLabel AI is an automated compliance screening
+                    and inspection-assistance system. OCR results and
+                    rule evaluations are intended to support inspection
+                    workflows. Final legal determination should be
+                    performed by an authorized officer after appropriate
+                    manual verification and consideration of applicable
+                    rules, amendments and exemptions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <strong>SmartLabel AI</strong>
+    &nbsp; • &nbsp;
+    AI-Based Packaged Commodity Compliance Verification
+
+    <br><br>
+
+    Legal Metrology (Packaged Commodities) Rules, 2011
+    and applicable amendments
+
+</footer>
+
+
+<!-- ================= BASIC UI JS ================= -->
+
+<script>
+
+    const imageInput = document.getElementById("imageInput");
+    const previewContainer = document.getElementById("previewContainer");
+    const previewImage = document.getElementById("previewImage");
+
+    imageInput.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+
+            previewImage.src = event.target.result;
+
+            previewContainer.style.display = "block";
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+
+
+    /*
+       Demo scanning animation.
+       Your existing app.js can control these elements
+       during the real OCR request.
+    */
+
+    function showScanningUI() {
+
+        const panel = document.getElementById("scanPanel");
+
+        panel.classList.add("show");
+
+        let progress = 0;
+
+        const interval = setInterval(() => {
+
+            progress += 5;
+
+            if (progress > 90) {
+                clearInterval(interval);
+            }
+
+            document.getElementById("progressFill")
+                .style.width = progress + "%";
+
+            document.getElementById("progressPercent")
+                .textContent = progress + "%";
+
+        }, 250);
+
+    }
+
+
+    function completeScanningUI() {
+
+        document.getElementById("progressFill")
+            .style.width = "100%";
+
+        document.getElementById("progressPercent")
+            .textContent = "100%";
+
+        document.getElementById("scanBadge")
+            .textContent = "COMPLETED";
+
+        document.getElementById("liveMessage")
+            .textContent = "Inspection completed successfully.";
+
+    }
+
+
+    document.getElementById("clearBtn")
+        .addEventListener("click", function () {
+
+            imageInput.value = "";
+
+            previewContainer.style.display = "none";
+
+            document.getElementById("resultStatus")
+                .textContent = "Awaiting Inspection";
+
+            document.getElementById("resultDescription")
+                .textContent =
+                "Upload a product image to begin compliance verification.";
+
+            document.getElementById("complianceScore")
+                .textContent = "—";
+
+        });
+
+
+    /*
+       If your existing app.js already has the analyze button
+       and API logic, keep that file.
+       This HTML only provides the enhanced frontend.
+    */
+
+</script>
+
 </body>
 </html>
