@@ -6,14 +6,39 @@ import tempfile
 import re
 import uuid
 import webbrowser
+import shutil
 import email.parser
 from urllib.parse import urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC = os.path.join(ROOT, "static")
 
-# Explicit verified path for Tesseract executable
-TESSERACT = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+def find_tesseract():
+    # Allow an environment variable to override the path
+    env_path = os.environ.get("TESSERACT_PATH")
+    if env_path and os.path.isfile(env_path):
+        return env_path
+
+    # Works on Render/Linux and Windows if Tesseract is in PATH
+    detected = shutil.which("tesseract")
+    if detected:
+        return detected
+
+    # Common Windows installation paths
+    windows_paths = [
+        r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+        r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
+        os.path.expandvars(r"%LOCALAPPDATA%\Tesseract-OCR\tesseract.exe")
+    ]
+
+    for path in windows_paths:
+        if os.path.isfile(path):
+            return path
+
+    return ""
+
+
+TESSERACT = find_tesseract()
 
 def clean_ocr_text(text):
     return text.replace("\r", "").replace("\x0c", "").replace("—", "-").replace("–", "-")
@@ -362,14 +387,17 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
     def log_message(self, *args):
         pass
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     os.makedirs(STATIC, exist_ok=True)
 
-    server = http.server.ThreadingHTTPServer(("0.0.0.0", port), Handler)
+    server = http.server.ThreadingHTTPServer(
+        ("0.0.0.0", port),
+        Handler
+    )
 
     print(f"SmartLabel AI server running on port {port}")
-    print(f"Using Tesseract: {TESSERACT} (Found: {os.path.isfile(TESSERACT)})")
+    print(f"Using Tesseract: {TESSERACT}")
+    print(f"Tesseract found: {bool(TESSERACT and os.path.isfile(TESSERACT))}")
 
     server.serve_forever()
