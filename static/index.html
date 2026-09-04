@@ -16,6 +16,74 @@
 
     <div class="grid no-print">
       <div class="card">
+        <!-- AI SCANNING STATUS -->
+<div id="scanPanel" class="scan-panel hidden no-print">
+
+  <div class="scan-header">
+    <div>
+      <h2>AI Compliance Inspection</h2>
+      <p id="scanSubtitle">Analyzing packaged commodity...</p>
+    </div>
+    <div id="scanBadge" class="scan-badge">SCANNING</div>
+  </div>
+
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div id="progressFill"></div>
+    </div>
+    <span id="progressPercent">0%</span>
+  </div>
+
+  <div class="processing-steps">
+
+    <div class="process-step" id="stepUpload">
+      <div class="step-icon">✓</div>
+      <div>
+        <strong>Image Uploaded</strong>
+        <span>Product image received</span>
+      </div>
+    </div>
+
+    <div class="process-step" id="stepOCR">
+      <div class="step-icon">2</div>
+      <div>
+        <strong>OCR Extraction</strong>
+        <span>Reading product label...</span>
+      </div>
+    </div>
+
+    <div class="process-step" id="stepExtract">
+      <div class="step-icon">3</div>
+      <div>
+        <strong>Information Extraction</strong>
+        <span>Identifying product details</span>
+      </div>
+    </div>
+
+    <div class="process-step" id="stepCompliance">
+      <div class="step-icon">4</div>
+      <div>
+        <strong>Compliance Check</strong>
+        <span>Validating Legal Metrology rules</span>
+      </div>
+    </div>
+
+    <div class="process-step" id="stepReport">
+      <div class="step-icon">5</div>
+      <div>
+        <strong>Report Generated</strong>
+        <span>Preparing inspection result</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="live-status">
+    <div class="spinner"></div>
+    <span id="liveMessage">Initializing OCR engine...</span>
+  </div>
+
+</div>
         <h2>1. Upload Product Label</h2>
         <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple>
         <div id="preview"></div>

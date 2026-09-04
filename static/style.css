@@ -272,3 +272,167 @@ pre {
     page-break-after: auto;
   }
 }
+/* ==============================
+   AI SCANNING PANEL
+   ============================== */
+
+.scan-panel {
+    margin-top: 25px;
+    padding: 25px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.scan-panel.hidden {
+    display: none;
+}
+
+.scan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.scan-header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.scan-header p {
+    margin-top: 5px;
+    color: #6b7280;
+}
+
+.scan-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+/* Progress */
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#progressFill {
+    width: 0%;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #06b6d4
+    );
+    transition: width 0.5s ease;
+}
+
+#progressPercent {
+    font-weight: 700;
+    min-width: 45px;
+}
+
+/* Steps */
+
+.processing-steps {
+    display: grid;
+    gap: 12px;
+}
+
+.process-step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    transition: 0.3s;
+}
+
+.process-step.active {
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.process-step.completed {
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+
+.step-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    font-weight: 700;
+}
+
+.process-step.active .step-icon {
+    background: #2563eb;
+    color: white;
+}
+
+.process-step.completed .step-icon {
+    background: #16a34a;
+    color: white;
+}
+
+.process-step strong {
+    display: block;
+}
+
+.process-step span {
+    display: block;
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 3px;
+}
+
+/* Live status */
+
+.live-status {
+    margin-top: 22px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #475569;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid #dbeafe;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,3 +1,86 @@
+function startAIScanUI() {
+
+  const panel = document.getElementById("scanPanel");
+
+  if (!panel) return;
+
+  panel.classList.remove("hidden");
+
+  const progress = document.getElementById("progressFill");
+  const percent = document.getElementById("progressPercent");
+  const message = document.getElementById("liveMessage");
+  const badge = document.getElementById("scanBadge");
+
+  progress.style.width = "5%";
+  percent.textContent = "5%";
+  badge.textContent = "SCANNING";
+
+  document.querySelectorAll(".process-step").forEach(step => {
+    step.classList.remove("active", "completed");
+  });
+
+  document.getElementById("stepUpload").classList.add("completed");
+  document.getElementById("stepOCR").classList.add("active");
+
+  message.textContent = "Tesseract OCR is reading the package label...";
+
+  setTimeout(() => {
+
+    document.getElementById("stepOCR")
+      .classList.remove("active");
+
+    document.getElementById("stepOCR")
+      .classList.add("completed");
+
+    document.getElementById("stepExtract")
+      .classList.add("active");
+
+    progress.style.width = "40%";
+    percent.textContent = "40%";
+
+    message.textContent =
+      "Extracting product name, quantity, MRP and manufacturer...";
+
+  }, 1000);
+
+  setTimeout(() => {
+
+    document.getElementById("stepExtract")
+      .classList.remove("active");
+
+    document.getElementById("stepExtract")
+      .classList.add("completed");
+
+    document.getElementById("stepCompliance")
+      .classList.add("active");
+
+    progress.style.width = "70%";
+    percent.textContent = "70%";
+
+    message.textContent =
+      "Checking declarations against Legal Metrology rules...";
+
+  }, 2000);
+
+  setTimeout(() => {
+
+    document.getElementById("stepCompliance")
+      .classList.remove("active");
+
+    document.getElementById("stepCompliance")
+      .classList.add("completed");
+
+    document.getElementById("stepReport")
+      .classList.add("active");
+
+    progress.style.width = "90%";
+    percent.textContent = "90%";
+
+    message.textContent =
+      "Generating explainable compliance report...";
+
+  }, 3000);
+}
 document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.getElementById("fileInput");
   const analyzeBtn = document.getElementById("analyze");
@@ -46,9 +129,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Please upload at least one label image first.");
       return;
     }
-
     analyzeBtn.disabled = true;
-    analyzeBtn.innerText = "Analyzing Legal Metrology Rules...";
+analyzeBtn.innerText = "Analyzing Legal Metrology Rules...";
+
+startAIScanUI();
     badge.innerText = "Processing";
     reportActions.style.display = "none";
 
@@ -142,14 +226,40 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
+
       resultDiv.innerHTML = html;
       reportActions.style.display = "flex";
+      document.getElementById("stepReport")
+  .classList.remove("active");
+
+document.getElementById("stepReport")
+  .classList.add("completed");
+
+document.getElementById("progressFill").style.width = "100%";
+document.getElementById("progressPercent").textContent = "100%";
+
+document.getElementById("liveMessage").textContent =
+  "Inspection completed successfully.";
+
+document.getElementById("scanBadge").textContent = "COMPLETED";
 
     } catch (err) {
       badge.innerText = "Failed";
       resultDiv.innerHTML = `
         <div style="color: #b91c1c; padding: 12px; background: #fee2e2; border-radius: 4px; font-size: 13px;">
           <strong>Scan Aborted:</strong> ${err.message}
+          const scanBadge = document.getElementById("scanBadge");
+
+if (scanBadge) {
+  scanBadge.textContent = "RETRY";
+}
+
+const liveMessage = document.getElementById("liveMessage");
+
+if (liveMessage) {
+  liveMessage.textContent =
+    "Scan could not be completed. Please try again.";
+}
         </div>
       `;
     } finally {
