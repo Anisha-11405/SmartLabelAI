@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmartLabel AI</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">CONSUMER PROTECTION &amp; LEGAL METROLOGY</div>
+    <h1>SmartLabel AI</h1>
+    <p>AI-assisted packaged commodity label inspection</p>
+  </header>
+
+  <section class="grid">
+    <div class="card">
+      <h2>1. Product Image</h2>
+      <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+      <div id="preview"></div>
+      <button id="analyze">Analyze with OCR</button>
+      <p class="hint">OCR runs locally through Tesseract. Images are not sent to an external OCR service.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Extracted Information <span id="badge">Waiting</span></h2>
+      <div id="fields" class="fields"></div>
+      <details>
+        <summary>View raw OCR text</summary>
+        <pre id="raw"></pre>
+      </details>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. Compliance Screening</h2>
+    <div id="result">Upload a label and click <b>Analyze with OCR</b>.</div>
+  </section>
+
+  <section class="card small">
+    <h2>OCR Diagnostics</h2>
+    <div id="diag">Checking...</div>
+  </section>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
