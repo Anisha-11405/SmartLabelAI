@@ -1,128 +1,811 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SmartLabel AI - LMPC Compliance Engine</title>
-  <link rel="stylesheet" href="/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmartLabel AI — LMPC Compliance Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE7;
+    --card:#FFFFFF;
+    --ink:#1C2321;
+    --ink-muted:#5B6660;
+    --ink-faint:#8B948C;
+    --navy:#2B3A55;
+    --navy-dim:#4A5A78;
+    --seal-red:#7A2E2E;
+    --seal-red-bg:#F6E9E8;
+    --gold:#8A6A24;
+    --gold-bg:#F5EFDD;
+    --pass:#35643D;
+    --pass-bg:#E7EFE4;
+    --hairline:#CDD0C6;
+    --hairline-soft:#E1E3DB;
+    --radius:3px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ -webkit-font-smoothing:antialiased; }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--hairline-soft) 1px, transparent 1px);
+    background-size: 100% 42px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    font-size:15px;
+    line-height:1.55;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:48px 28px 80px;
+  }
+
+  /* ---------- Letterhead ---------- */
+  .letterhead{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    padding-bottom:22px;
+    margin-bottom:8px;
+    border-bottom:2px solid var(--ink);
+  }
+
+  .mark{
+    flex:none;
+    width:52px; height:52px;
+    border:1.5px solid var(--navy);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Serif', serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--navy);
+    letter-spacing:0.02em;
+  }
+
+  .letterhead .statute{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.05em;
+    color:var(--navy-dim);
+    margin-bottom:6px;
+  }
+
+  .letterhead h1{
+    font-family:'IBM Plex Serif', serif;
+    font-weight:600;
+    font-size:27px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+
+  .letterhead p{
+    margin:0;
+    color:var(--ink-muted);
+    font-size:13.5px;
+    max-width:60ch;
+  }
+
+  /* ---------- Section shell ---------- */
+  section.block{
+    margin-top:34px;
+  }
+
+  .block-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:14px;
+  }
+
+  .block-head .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--navy);
+    border:1px solid var(--navy);
+    border-radius:50%;
+    width:22px; height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+  }
+
+  .block-head h2{
+    font-family:'IBM Plex Serif', serif;
+    font-size:16.5px;
+    font-weight:600;
+    margin:0;
+    flex:1;
+  }
+
+  .status-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.04em;
+    padding:3px 9px;
+    border-radius:20px;
+    border:1px solid var(--hairline);
+    color:var(--ink-muted);
+    background:var(--card);
+  }
+  .status-chip.processing{ color:var(--gold); border-color:var(--gold); background:var(--gold-bg); }
+  .status-chip.done{ color:var(--pass); border-color:var(--pass); background:var(--pass-bg); }
+  .status-chip.failed{ color:var(--seal-red); border-color:var(--seal-red); background:var(--seal-red-bg); }
+
+  .panel{
+    background:var(--card);
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    padding:24px;
+  }
+
+  /* ---------- Upload ---------- */
+  .dropzone{
+    border:1.5px dashed var(--hairline);
+    border-radius:var(--radius);
+    padding:28px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+    background:#FBFBF9;
+  }
+  .dropzone:hover, .dropzone.drag{
+    border-color:var(--navy);
+    background:#F4F5F1;
+  }
+  .dropzone .dz-title{
+    font-weight:600;
+    font-size:14px;
+    margin-bottom:4px;
+  }
+  .dropzone .dz-sub{
+    font-size:12.5px;
+    color:var(--ink-faint);
+  }
+  .dropzone input{ display:none; }
+
+  #preview{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:16px;
+  }
+  .thumb{
+    position:relative;
+    width:76px; height:76px;
+    border:1px solid var(--hairline);
+    border-radius:2px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .thumb img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .thumb .rm{
+    position:absolute;
+    top:2px; right:2px;
+    width:18px; height:18px;
+    border-radius:50%;
+    background:rgba(28,35,33,0.75);
+    color:#fff;
+    border:none;
+    font-size:11px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+  }
+  .thumb .idx{
+    position:absolute;
+    bottom:0; left:0;
+    background:rgba(28,35,33,0.75);
+    color:#fff;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9.5px;
+    padding:1px 4px;
+  }
+
+  .run-row{
+    margin-top:18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  button.primary{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:var(--radius);
+    padding:11px 20px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+    letter-spacing:0.01em;
+  }
+  button.primary:hover{ background:#22304a; }
+  button.primary:disabled{ background:#A9AFAE; cursor:not-allowed; }
+
+  .run-hint{
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+
+  /* ---------- Declarations ledger ---------- */
+  .ledger-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px dotted var(--hairline);
+    font-size:13.5px;
+  }
+  .ledger-row:last-child{ border-bottom:none; }
+  .ledger-row .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--navy-dim);
+    letter-spacing:0.02em;
+    min-width:150px;
+    flex:none;
+  }
+  .ledger-row .v{
+    color:var(--ink);
+    text-align:right;
+    flex:1;
+    word-break:break-word;
+  }
+  .ledger-row .v.empty{ color:var(--ink-faint); font-style:italic; }
+
+  .placeholder{
+    color:var(--ink-faint);
+    font-size:13.5px;
+    font-style:italic;
+  }
+
+  details.raw{ margin-top:18px; }
+  details.raw summary{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--navy);
+    cursor:pointer;
+  }
+  details.raw pre{
+    margin-top:10px;
+    background:#F7F7F4;
+    border:1px solid var(--hairline);
+    border-radius:2px;
+    padding:12px;
+    max-height:180px;
+    overflow:auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    white-space:pre-wrap;
+    color:var(--ink-muted);
+  }
+
+  /* ---------- Report ---------- */
+  .report-toolbar{
+    display:flex;
+    gap:8px;
+  }
+  button.ghost{
+    background:transparent;
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    padding:6px 12px;
+    font-size:11.5px;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink-muted);
+    cursor:pointer;
+  }
+  button.ghost:hover{ border-color:var(--navy); color:var(--navy); }
+
+  .verdict-strip{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    padding-bottom:20px;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--hairline-soft);
+  }
+
+  .seal{
+    flex:none;
+    width:84px; height:84px;
+    border-radius:50%;
+    border:2.5px solid;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    transform:rotate(-6deg);
+  }
+  .seal .pct{ font-size:20px; font-weight:600; line-height:1; }
+  .seal .frac{ font-size:9px; margin-top:3px; }
+
+  .verdict-copy .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    color:var(--ink-faint);
+    margin-bottom:4px;
+  }
+  .verdict-copy h3{
+    font-family:'IBM Plex Serif', serif;
+    font-size:19px;
+    margin:0 0 4px;
+  }
+  .verdict-copy .statute-line{
+    font-size:12.5px;
+    color:var(--ink-muted);
+  }
+
+  .meta-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px 24px;
+    font-size:12.5px;
+    margin-bottom:22px;
+  }
+  .meta-grid div span.k{
+    color:var(--ink-faint);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    display:block;
+    margin-bottom:1px;
+  }
+
+  table.reg{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.8px;
+  }
+  table.reg th{
+    text-align:left;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    color:var(--ink-faint);
+    padding:0 10px 8px 0;
+    border-bottom:1px solid var(--ink);
+  }
+  table.reg td{
+    padding:11px 10px 11px 0;
+    border-bottom:1px solid var(--hairline-soft);
+    vertical-align:top;
+  }
+  table.reg td.rule{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--navy);
+    white-space:nowrap;
+  }
+  table.reg td.remedy{
+    color:var(--ink-muted);
+    font-size:12px;
+  }
+
+  .stamp{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:0.03em;
+    padding:2px 8px;
+    border:1.5px solid;
+    border-radius:2px;
+    white-space:nowrap;
+  }
+  .stamp.PASS{ color:var(--pass); border-color:var(--pass); background:var(--pass-bg); }
+  .stamp.REVIEW{ color:var(--gold); border-color:var(--gold); background:var(--gold-bg); }
+  .stamp.NON-COMPLIANT{ color:var(--seal-red); border-color:var(--seal-red); background:var(--seal-red-bg); }
+
+  .disclaimer{
+    margin-top:20px;
+    padding-top:14px;
+    border-top:1px solid var(--hairline-soft);
+    font-size:11px;
+    color:var(--ink-faint);
+    line-height:1.6;
+  }
+
+  .error-box{
+    background:var(--seal-red-bg);
+    border:1px solid var(--seal-red);
+    color:var(--seal-red);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    font-size:13px;
+  }
+
+  /* ---------- Footer diagnostics ---------- */
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--hairline);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  footer .dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--ink-faint);
+    flex:none;
+  }
+  footer .dot.ok{ background:var(--pass); }
+  footer .dot.err{ background:var(--seal-red); }
+  footer code{
+    background:#F1F2EC;
+    padding:1px 5px;
+    border-radius:2px;
+  }
+
+  @media (max-width:600px){
+    .wrap{ padding:32px 16px 60px; }
+    .letterhead h1{ font-size:22px; }
+    .meta-grid{ grid-template-columns:1fr; }
+    .ledger-row{ flex-direction:column; gap:2px; }
+    .ledger-row .v{ text-align:left; }
+    table.reg, table.reg thead, table.reg tbody, table.reg th, table.reg td, table.reg tr{ display:block; }
+    table.reg thead{ display:none; }
+    table.reg tr{ padding:10px 0; border-bottom:1px solid var(--hairline-soft); }
+    table.reg td{ border:none; padding:2px 0; }
+    table.reg td.rule{ font-weight:600; }
+  }
+
+  @media print{
+    body{ background:#fff; }
+    .no-print{ display:none !important; }
+    .wrap{ max-width:100%; padding:0; }
+    .panel{ border:none; padding:0; }
+    section.block{ margin-top:20px; }
+  }
+</style>
 </head>
 <body>
   <div class="wrap">
-    <header class="no-print">
-      <div class="eyebrow">LEGAL METROLOGY (PACKAGED COMMODITIES) RULES, 2011</div>
-      <h1>SmartLabel AI Compliance Auditor</h1>
-      <p>Automated declaration verification and statutory regulatory reporting</p>
-    </header>
 
-    <div class="grid no-print">
-      <div class="card">
-        <!-- AI SCANNING STATUS -->
-<div id="scanPanel" class="scan-panel hidden no-print">
-
-  <div class="scan-header">
-    <div>
-      <h2>AI Compliance Inspection</h2>
-      <p id="scanSubtitle">Analyzing packaged commodity...</p>
-    </div>
-    <div id="scanBadge" class="scan-badge">SCANNING</div>
-  </div>
-
-  <div class="progress-container">
-    <div class="progress-bar">
-      <div id="progressFill"></div>
-    </div>
-    <span id="progressPercent">0%</span>
-  </div>
-
-  <div class="processing-steps">
-
-    <div class="process-step" id="stepUpload">
-      <div class="step-icon">✓</div>
+    <div class="letterhead">
+      <div class="mark">LM</div>
       <div>
-        <strong>Image Uploaded</strong>
-        <span>Product image received</span>
+        <div class="statute">LEGAL METROLOGY (PACKAGED COMMODITIES) RULES, 2011</div>
+        <h1>SmartLabel AI Compliance Register</h1>
+        <p>Upload a product label to extract statutory declarations and generate an inspection-grade audit report against Rule 6.</p>
       </div>
     </div>
 
-    <div class="process-step" id="stepOCR">
-      <div class="step-icon">2</div>
-      <div>
-        <strong>OCR Extraction</strong>
-        <span>Reading product label...</span>
+    <!-- 01 Intake -->
+    <section class="block no-print">
+      <div class="block-head">
+        <span class="num">1</span>
+        <h2>Label Intake</h2>
       </div>
-    </div>
-
-    <div class="process-step" id="stepExtract">
-      <div class="step-icon">3</div>
-      <div>
-        <strong>Information Extraction</strong>
-        <span>Identifying product details</span>
-      </div>
-    </div>
-
-    <div class="process-step" id="stepCompliance">
-      <div class="step-icon">4</div>
-      <div>
-        <strong>Compliance Check</strong>
-        <span>Validating Legal Metrology rules</span>
-      </div>
-    </div>
-
-    <div class="process-step" id="stepReport">
-      <div class="step-icon">5</div>
-      <div>
-        <strong>Report Generated</strong>
-        <span>Preparing inspection result</span>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="live-status">
-    <div class="spinner"></div>
-    <span id="liveMessage">Initializing OCR engine...</span>
-  </div>
-
-</div>
-        <h2>1. Upload Product Label</h2>
-        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+      <div class="panel">
+        <label class="dropzone" id="dropzone" for="fileInput">
+          <div class="dz-title">Drop label images here, or click to browse</div>
+          <div class="dz-sub">PNG, JPG or WEBP · multiple images accepted</div>
+          <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+        </label>
         <div id="preview"></div>
-        <button id="analyze">Run Compliance Audit</button>
-      </div>
-
-      <div class="card">
-        <h2>2. Detected Declarations <span id="badge" class="badge">Waiting</span></h2>
-        <div id="fields" class="fields">
-          <p class="placeholder-text">Declarations will appear after scanning.</p>
+        <div class="run-row">
+          <button class="primary" id="analyze">Run Compliance Audit</button>
+          <span class="run-hint" id="runHint"></span>
         </div>
-        <details>
+      </div>
+    </section>
+
+    <!-- 02 Declarations -->
+    <section class="block no-print">
+      <div class="block-head">
+        <span class="num">2</span>
+        <h2>Detected Declarations</h2>
+        <span class="status-chip" id="badge">Waiting</span>
+      </div>
+      <div class="panel">
+        <div id="fields">
+          <p class="placeholder">Declarations will appear here once a label has been scanned.</p>
+        </div>
+        <details class="raw">
           <summary>View raw extracted OCR text</summary>
           <pre id="raw"></pre>
         </details>
       </div>
-    </div>
+    </section>
 
-    <!-- Printable Report Container -->
-    <div class="card report-card" id="printableReport">
-      <div class="report-header-bar">
-        <h2>3. Statutory Compliance Inspection Report</h2>
-        <div class="report-actions no-print" id="reportActions" style="display: none;">
-          <button id="printReportBtn" class="btn-secondary">Print / Save as PDF</button>
-          <button id="downloadJsonBtn" class="btn-secondary">Download JSON</button>
+    <!-- 03 Report -->
+    <section class="block" id="printableReport">
+      <div class="block-head">
+        <span class="num">3</span>
+        <h2>Statutory Inspection Report</h2>
+        <div class="report-toolbar no-print" id="reportActions" style="display:none;">
+          <button class="ghost" id="printReportBtn">Print / Save as PDF</button>
+          <button class="ghost" id="downloadJsonBtn">Download JSON</button>
         </div>
       </div>
-      
-      <div id="result">
-        <p class="placeholder-text">Upload a label image and click <b>Run Compliance Audit</b> to generate the LMPC evaluation report.</p>
+      <div class="panel">
+        <div id="result">
+          <p class="placeholder">Upload a label image and run the audit to generate the LMPC compliance report.</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="card small no-print">
-      <h2>OCR Engine Diagnostics</h2>
-      <div id="diag">Checking engine...</div>
-    </div>
+    <footer class="no-print">
+      <span class="dot" id="diagDot"></span>
+      <span id="diag">Checking OCR engine…</span>
+    </footer>
   </div>
 
-  <script src="/app.js"></script>
+<script>
+(() => {
+  const fileInput = document.getElementById("fileInput");
+  const dropzone = document.getElementById("dropzone");
+  const analyzeBtn = document.getElementById("analyze");
+  const preview = document.getElementById("preview");
+  const badge = document.getElementById("badge");
+  const fieldsContainer = document.getElementById("fields");
+  const rawPre = document.getElementById("raw");
+  const resultDiv = document.getElementById("result");
+  const diag = document.getElementById("diag");
+  const diagDot = document.getElementById("diagDot");
+  const reportActions = document.getElementById("reportActions");
+  const printReportBtn = document.getElementById("printReportBtn");
+  const downloadJsonBtn = document.getElementById("downloadJsonBtn");
+  const runHint = document.getElementById("runHint");
+
+  let currentFiles = [];
+  let currentInspectionData = null;
+
+  // ---- Diagnostics ----
+  fetch("/api/health")
+    .then(r => r.json())
+    .then(data => {
+      if (data.tesseract) {
+        diagDot.classList.add("ok");
+        diag.innerHTML = `Engine ready — Tesseract detected at <code>${data.path}</code>`;
+      } else {
+        diagDot.classList.add("err");
+        diag.innerHTML = `Engine missing — Tesseract not found at <code>${data.path}</code>`;
+      }
+    })
+    .catch(err => {
+      diagDot.classList.add("err");
+      diag.textContent = `Backend unreachable: ${err.message}`;
+    });
+
+  // ---- File handling ----
+  function renderPreview() {
+    preview.innerHTML = "";
+    currentFiles.forEach((file, i) => {
+      const thumb = document.createElement("div");
+      thumb.className = "thumb";
+
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      thumb.appendChild(img);
+
+      const idx = document.createElement("span");
+      idx.className = "idx";
+      idx.textContent = `#${i + 1}`;
+      thumb.appendChild(idx);
+
+      const rm = document.createElement("button");
+      rm.className = "rm";
+      rm.type = "button";
+      rm.innerHTML = "&times;";
+      rm.title = "Remove";
+      rm.addEventListener("click", (e) => {
+        e.preventDefault();
+        currentFiles.splice(i, 1);
+        renderPreview();
+      });
+      thumb.appendChild(rm);
+
+      preview.appendChild(thumb);
+    });
+    runHint.textContent = currentFiles.length
+      ? `${currentFiles.length} image${currentFiles.length > 1 ? "s" : ""} queued`
+      : "";
+  }
+
+  function addFiles(fileList) {
+    const imgs = Array.from(fileList).filter(f => f.type.startsWith("image/"));
+    currentFiles = currentFiles.concat(imgs);
+    renderPreview();
+  }
+
+  fileInput.addEventListener("change", () => {
+    addFiles(fileInput.files);
+    fileInput.value = "";
+  });
+
+  ["dragenter", "dragover"].forEach(evt => {
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.add("drag");
+    });
+  });
+  ["dragleave", "drop"].forEach(evt => {
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("drag");
+    });
+  });
+  dropzone.addEventListener("drop", (e) => {
+    if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+
+  // ---- Analyze ----
+  analyzeBtn.addEventListener("click", async () => {
+    if (currentFiles.length === 0) {
+      alert("Please add at least one label image first.");
+      return;
+    }
+
+    analyzeBtn.disabled = true;
+    analyzeBtn.textContent = "Analyzing Legal Metrology Rules…";
+    badge.textContent = "Processing";
+    badge.className = "status-chip processing";
+    reportActions.style.display = "none";
+
+    const formData = new FormData();
+    currentFiles.forEach(f => formData.append("files", f));
+
+    try {
+      const resp = await fetch("/api/analyze", { method: "POST", body: formData });
+      const data = await resp.json();
+      if (!resp.ok || data.error) throw new Error(data.error || "Compliance inspection failed.");
+
+      currentInspectionData = data;
+      badge.textContent = "Completed";
+      badge.className = "status-chip done";
+      rawPre.textContent = data.ocr_raw || "No raw text extracted.";
+
+      // Declarations ledger
+      fieldsContainer.innerHTML = "";
+      const declarations = data.declarations || {};
+      const entries = Object.entries(declarations);
+      if (entries.length === 0) {
+        fieldsContainer.innerHTML = `<p class="placeholder">No declarations detected.</p>`;
+      } else {
+        entries.forEach(([key, value]) => {
+          const row = document.createElement("div");
+          row.className = "ledger-row";
+          const label = key.replace(/_/g, " ");
+          row.innerHTML = `<span class="k">${escapeHtml(label)}</span><span class="v ${value ? "" : "empty"}">${value ? escapeHtml(value) : "Not detected"}</span>`;
+          fieldsContainer.appendChild(row);
+        });
+      }
+
+      // Report
+      renderReport(data, declarations);
+      reportActions.style.display = "flex";
+
+    } catch (err) {
+      badge.textContent = "Failed";
+      badge.className = "status-chip failed";
+      resultDiv.innerHTML = `<div class="error-box"><strong>Scan aborted —</strong> ${escapeHtml(err.message)}</div>`;
+    } finally {
+      analyzeBtn.disabled = false;
+      analyzeBtn.textContent = "Run Compliance Audit";
+    }
+  });
+
+  function verdictColors(score) {
+    if (score >= 80) return { css: "var(--pass)" };
+    if (score >= 60) return { css: "var(--gold)" };
+    return { css: "var(--seal-red)" };
+  }
+
+  function renderReport(data, declarations) {
+    const rep = data.compliance_report;
+    const col = verdictColors(rep.score).css;
+    const timestamp = new Date().toLocaleString("en-IN", { timeZoneName: "short" });
+
+    let html = `
+      <div class="verdict-strip">
+        <div class="seal" style="border-color:${col}; color:${col};">
+          <div class="pct">${rep.score}%</div>
+          <div class="frac">${rep.passed_rules}/${rep.total_rules} PASS</div>
+        </div>
+        <div class="verdict-copy">
+          <div class="tag">Formal inspection dossier</div>
+          <h3 style="color:${col};">${escapeHtml(rep.verdict)}</h3>
+          <div class="statute-line">Legal Metrology Act, 2009 &amp; Packaged Commodities Rules, 2011 (as amended)</div>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div><span class="k">Inspection ID</span>${escapeHtml(data.inspection_id)}</div>
+        <div><span class="k">Generated</span>${escapeHtml(timestamp)}</div>
+        <div><span class="k">Product / Item</span>${escapeHtml(declarations.commodity_name || "Unspecified")}</div>
+        <div><span class="k">Batch / Lot</span>${escapeHtml(declarations.batch_number || "Not stated")}</div>
+      </div>
+
+      <table class="reg">
+        <thead>
+          <tr>
+            <th style="width:13%;">Rule</th>
+            <th style="width:24%;">Requirement</th>
+            <th style="width:24%;">Scanned content</th>
+            <th style="width:12%;">Finding</th>
+            <th style="width:27%;">Corrective action</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    rep.rules.forEach(r => {
+      html += `
+        <tr>
+          <td class="rule">${escapeHtml(r.rule)}</td>
+          <td>${escapeHtml(r.declaration)}</td>
+          <td>${escapeHtml(r.found)}</td>
+          <td><span class="stamp ${r.status}">${escapeHtml(r.status)}</span></td>
+          <td class="remedy">${escapeHtml(r.remediation)}</td>
+        </tr>
+      `;
+    });
+
+    html += `
+        </tbody>
+      </table>
+      <div class="disclaimer">
+        <strong>Statutory notice —</strong> this audit report is generated automatically by OCR screening under Rule 6 of the Legal Metrology (Packaged Commodities) Rules, 2011. Non-compliance with mandatory declarations may trigger penal proceedings under Section 36 of the Legal Metrology Act, 2009.
+      </div>
+    `;
+
+    resultDiv.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // ---- Report actions ----
+  printReportBtn.addEventListener("click", () => window.print());
+
+  downloadJsonBtn.addEventListener("click", () => {
+    if (!currentInspectionData) return;
+    const blob = new Blob([JSON.stringify(currentInspectionData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${currentInspectionData.inspection_id}_audit_report.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
 </body>
 </html>
