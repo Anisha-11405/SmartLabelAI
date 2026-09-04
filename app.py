@@ -364,13 +364,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         pass
 
 if __name__ == "__main__":
-    port = 8000
+    port = int(os.environ.get("PORT", 8000))
     os.makedirs(STATIC, exist_ok=True)
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    print(f"SmartLabel AI server running on http://127.0.0.1:{port}")
+
+    server = http.server.ThreadingHTTPServer(("0.0.0.0", port), Handler)
+
+    print(f"SmartLabel AI server running on port {port}")
     print(f"Using Tesseract: {TESSERACT} (Found: {os.path.isfile(TESSERACT)})")
-    try:
-        webbrowser.open(f"http://127.0.0.1:{port}")
-    except Exception:
-        pass
+
     server.serve_forever()
