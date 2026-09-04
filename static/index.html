@@ -1,48 +1,60 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SmartLabel AI</title>
-<link rel="stylesheet" href="/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartLabel AI - LMPC Compliance Engine</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="eyebrow">CONSUMER PROTECTION &amp; LEGAL METROLOGY</div>
-    <h1>SmartLabel AI</h1>
-    <p>AI-assisted packaged commodity label inspection</p>
-  </header>
+  <div class="wrap">
+    <header class="no-print">
+      <div class="eyebrow">LEGAL METROLOGY (PACKAGED COMMODITIES) RULES, 2011</div>
+      <h1>SmartLabel AI Compliance Auditor</h1>
+      <p>Automated declaration verification and statutory regulatory reporting</p>
+    </header>
 
-  <section class="grid">
-    <div class="card">
-      <h2>1. Product Image</h2>
-      <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple>
-      <div id="preview"></div>
-      <button id="analyze">Analyze with OCR</button>
-      <p class="hint">OCR runs locally through Tesseract. Images are not sent to an external OCR service.</p>
+    <div class="grid no-print">
+      <div class="card">
+        <h2>1. Upload Product Label</h2>
+        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+        <div id="preview"></div>
+        <button id="analyze">Run Compliance Audit</button>
+      </div>
+
+      <div class="card">
+        <h2>2. Detected Declarations <span id="badge" class="badge">Waiting</span></h2>
+        <div id="fields" class="fields">
+          <p class="placeholder-text">Declarations will appear after scanning.</p>
+        </div>
+        <details>
+          <summary>View raw extracted OCR text</summary>
+          <pre id="raw"></pre>
+        </details>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>2. Extracted Information <span id="badge">Waiting</span></h2>
-      <div id="fields" class="fields"></div>
-      <details>
-        <summary>View raw OCR text</summary>
-        <pre id="raw"></pre>
-      </details>
+    <!-- Printable Report Container -->
+    <div class="card report-card" id="printableReport">
+      <div class="report-header-bar">
+        <h2>3. Statutory Compliance Inspection Report</h2>
+        <div class="report-actions no-print" id="reportActions" style="display: none;">
+          <button id="printReportBtn" class="btn-secondary">Print / Save as PDF</button>
+          <button id="downloadJsonBtn" class="btn-secondary">Download JSON</button>
+        </div>
+      </div>
+      
+      <div id="result">
+        <p class="placeholder-text">Upload a label image and click <b>Run Compliance Audit</b> to generate the LMPC evaluation report.</p>
+      </div>
     </div>
-  </section>
 
-  <section class="card">
-    <h2>3. Compliance Screening</h2>
-    <div id="result">Upload a label and click <b>Analyze with OCR</b>.</div>
-  </section>
+    <div class="card small no-print">
+      <h2>OCR Engine Diagnostics</h2>
+      <div id="diag">Checking engine...</div>
+    </div>
+  </div>
 
-  <section class="card small">
-    <h2>OCR Diagnostics</h2>
-    <div id="diag">Checking...</div>
-  </section>
-</div>
-<script src="/app.js"></script>
+  <script src="/app.js"></script>
 </body>
 </html>
